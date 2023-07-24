@@ -1,0 +1,11 @@
+.devcontainer
+.docker
+.husky
+.vscode
+dist
+node_modules
+scripts
+templates
+views
+coverage
+src/**/*.md

@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  nest_crud:
+    container_name: nest_crud
+    build: .
+    tty: true
+    ports:
+      - 3333:3333
+    networks:
+      - app-network
+    volumes:
+      - .:/home/ubuntu/app
+
+  crud_postgres:
+    container_name: crud_postgres
+    image: postgres
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+networks:
+  app-network:
+    name: app-network
+
+volumes:
+  pgdata:
+  pgdata-tst:
