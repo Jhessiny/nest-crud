@@ -25,31 +25,12 @@ export class MovieRepositoryAdapter implements MovieRepository {
         director: movie.getState().director.getState(),
         reviews: movie.getState().reviews.map((review) => review.getState()),
       });
-    console.log(createdMovie);
-    const movieData = {
-      id: 'b948fc5b-4367-41a8-bb1a-574d3adf4e75',
-      name: 'Cinderela 2',
-      premiereDate: '2023-07-20T18:54:32.935Z',
-      directorId: 'd7bfc52d-4837-4cb7-bd0e-32269bcc27af',
-      director: {
-        id: 'd7bfc52d-4837-4cb7-bd0e-32269bcc27af',
-        name: 'jhess',
-        prizes: [],
-        birthDate: '2023-07-20T18:54:32.935Z',
-      },
-      reviews: [
-        {
-          authorName: 'Jhesss',
-          text: 'fff ofioio akwjhad kajsd wkej ekwejw',
-          movieId: 'b948fc5b-4367-41a8-bb1a-574d3adf4e75',
-        },
-      ],
-    };
+    console.log({ createdMovie });
 
     await this.connection
       .getConnection()
       .getRepository(MovieMapping)
-      .save(movieData);
+      .save(createdMovie);
   }
 
   async findOne({ name, premiereDate }: { name: string; premiereDate: Date }) {
