@@ -2,20 +2,22 @@ import { DatabaseConnection } from '~/shared/application/database';
 import { SharedProviderEnum } from '../shared-constants';
 import { FactoryProvider, Provider } from '@nestjs/common';
 import {
+  MovieRepository,
   ReviewRepository,
   WriteReviewServiceAdapter,
 } from '~/catalog/application';
 import { WriteReviewService } from '~/catalog/application/use-cases/contracts';
-import { WriteReviewTransactionAdapter } from '~/catalog/infra/transaction/typeorm/write-review-transaction';
 import { UpdateReviewService } from '~/catalog/application/use-cases/contracts/update-review';
 import { UpdateReviewServiceAdapter } from '~/catalog/application/use-cases/update-review-service-adapter';
 import { ReviewRepositoryAdapter } from '~/catalog/infra/repository/typeorm/review-repository-adapter';
+import { MovieProviderEnum } from '../movie-module/movie.module';
 
 enum ReviewProviderEnum {
   ReviewRepository = 'ReviewRepository',
   WriteReviewService = 'WriteReviewService',
   UpdateReviewService = 'UpdateReviewService',
   WriteReviewTransactionAdapter = 'WriteReviewTransactionAdapter',
+  MovieRepository = 'MovieRepository',
 }
 
 const reviewRepositoryProvider: FactoryProvider<ReviewRepository> = {
@@ -34,21 +36,13 @@ const updateReviewService: FactoryProvider<UpdateReviewService> = {
 
 const writeReviewService: FactoryProvider<WriteReviewService> = {
   provide: ReviewProviderEnum.WriteReviewService,
-  useFactory: (writeReviewTransaction: WriteReviewTransactionAdapter) =>
-    new WriteReviewServiceAdapter(writeReviewTransaction),
-  inject: [ReviewProviderEnum.WriteReviewTransactionAdapter],
-};
-
-const writeReviewTransaction: FactoryProvider<WriteReviewTransactionAdapter> = {
-  provide: ReviewProviderEnum.WriteReviewTransactionAdapter,
-  useFactory: (connection: DatabaseConnection) =>
-    new WriteReviewTransactionAdapter(connection),
-  inject: [SharedProviderEnum.DatabaseConnection],
+  useFactory: (movieRepository: MovieRepository) =>
+    new WriteReviewServiceAdapter(movieRepository),
+  inject: [MovieProviderEnum.MovieRepository],
 };
 
 export const reviewProviders: Provider[] = [
   writeReviewService,
-  writeReviewTransaction,
   updateReviewService,
   reviewRepositoryProvider,
 ];

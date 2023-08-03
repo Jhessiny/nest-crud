@@ -1,5 +1,5 @@
-import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { MovieMapping } from './movie';
 
 @Entity({ name: 'reviews' })
 export class ReviewMapping {
@@ -21,8 +21,9 @@ export class ReviewMapping {
   @Column('uuid', { name: 'movie_id' })
   movieId: string;
 
-  @BeforeInsert()
-  defaultUUID() {
-    this.id = this.id || uuid();
-  }
+  @ManyToOne(() => MovieMapping, (movie) => movie.reviews, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  movie: MovieMapping;
 }

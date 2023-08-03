@@ -23,10 +23,5 @@ export namespace WriteReviewService {
     prizes: string[];
   };
 
-  export type OutputDTO = {
-    authorName: string;
-    text: string;
-    movieId: string;
-    id: string;
-  };
+  export type OutputDTO = void;
 }

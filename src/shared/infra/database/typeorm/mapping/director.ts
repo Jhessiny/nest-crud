@@ -1,5 +1,5 @@
-import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
+import { MovieMapping } from './movie';
 
 @Entity({ name: 'directors' })
 export class DirectorMapping {
@@ -18,8 +18,7 @@ export class DirectorMapping {
   @Column('date', { name: 'birth_date' })
   birthDate: Date;
 
-  @BeforeInsert()
-  defaultUUID() {
-    this.id = this.id || uuid();
-  }
+  @OneToMany(() => MovieMapping, (movie) => movie.directorId)
+  @JoinColumn([{ name: 'director_id', referencedColumnName: 'id' }])
+  movies: MovieMapping[];
 }

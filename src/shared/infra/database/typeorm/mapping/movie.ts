@@ -1,13 +1,13 @@
 import {
-  BeforeInsert,
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
 } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 import { DirectorMapping } from './director';
+import { ReviewMapping } from './review';
 
 @Entity({ name: 'movies' })
 export class MovieMapping {
@@ -26,12 +26,16 @@ export class MovieMapping {
   @Column('uuid', { name: 'director_id' })
   directorId: string;
 
-  @BeforeInsert()
-  defaultUUID() {
-    this.id = this.id || uuid();
-  }
-
-  @ManyToOne(() => DirectorMapping)
+  @ManyToOne(() => DirectorMapping, (director) => director.movies, {
+    eager: true,
+    cascade: ['insert', 'update'],
+  })
   @JoinColumn([{ name: 'director_id', referencedColumnName: 'id' }])
   director: DirectorMapping;
+
+  @OneToMany(() => ReviewMapping, (review) => review.movie, {
+    eager: true,
+    cascade: ['insert', 'update'],
+  })
+  reviews: ReviewMapping[];
 }

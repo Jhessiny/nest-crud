@@ -8,7 +8,7 @@ import { MovieRepositoryAdapter } from '~/catalog/infra/repository/typeorm/movie
 import { DeleteMovieService } from '~/catalog/application/use-cases/contracts/delete-movie';
 import { DeleteMovieServiceAdapter } from '~/catalog/application/use-cases/delete-movie-service-adapter';
 
-enum MovieProviderEnum {
+export enum MovieProviderEnum {
   GetMovieDAO = 'GetMovieDAO',
   GetMovieService = 'GetMovieService',
   MovieRepository = 'MovieRepository',
